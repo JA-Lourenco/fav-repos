@@ -1,8 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { rotate } from "../../global/styles";
 
 interface ButtonProps {
   width: string;
   height: string;
+  $loading?: boolean;
 }
 
 export const ButtonStyled = styled.button<ButtonProps>`
@@ -14,12 +16,28 @@ export const ButtonStyled = styled.button<ButtonProps>`
 
   border-radius: 5px;
 
-  &:hover {
-    color: var(--blue);
-    background-color: var(--white);
+  ${({ disabled }) =>
+    disabled
+      ? css`
+          cursor: not-allowed;
+          opacity: 0.7;
+        `
+      : css`
+          &:hover {
+            color: var(--blue);
+            background-color: var(--white);
 
-    border: 1px solid var(--blue);
+            border: 1px solid var(--blue);
 
-    transition: all 0.5s ease-out;
-  }
+            transition: all 0.5s ease-out;
+          }
+        `}
+
+  ${({ $loading }) =>
+    $loading &&
+    css`
+      svg {
+        animation: ${rotate} 2s linear infinite;
+      }
+    `};
 `;

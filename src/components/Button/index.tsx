@@ -7,6 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   width: string;
   height: string;
   icon?: JSX.Element;
+  $loading?: boolean;
 }
 
 export const Button = ({
@@ -14,10 +15,11 @@ export const Button = ({
   width,
   height,
   icon,
+  $loading,
   ...rest
 }: ButtonProps) => {
   return (
-    <ButtonStyled width={width} height={height} {...rest}>
+    <ButtonStyled width={width} height={height} $loading={$loading} {...rest}>
       {icon && icon}
       {title && title}
     </ButtonStyled>
