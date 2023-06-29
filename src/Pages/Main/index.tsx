@@ -1,4 +1,10 @@
-import { useState, ChangeEvent, FormEvent, useCallback } from "react";
+import {
+  useState,
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+} from "react";
 
 import { Button } from "../../components/Button";
 
@@ -14,9 +20,11 @@ interface RepositoryProps {
 }
 
 export const Main = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [repositories, setRepositories] = useState<RepositoryProps[]>([]);
   const [loading, setLoading] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [repositories, setRepositories] = useState<RepositoryProps[]>(
+    JSON.parse(localStorage.getItem("localRepositories") || "[]")
+  );
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -93,6 +101,10 @@ export const Main = () => {
       </li>
     ));
   };
+
+  useEffect(() => {
+    localStorage.setItem("localRepositories", JSON.stringify(repositories));
+  }, [repositories]);
 
   return (
     <Container>
