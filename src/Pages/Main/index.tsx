@@ -34,7 +34,17 @@ export const Main = () => {
 
         setLoading(true);
 
-        const { data } = await api.get(`/repos/${inputValue}`);
+        const { data } = await api.get<RepositoryProps>(`/repos/${inputValue}`);
+
+        const duplicated = repositories.find(
+          ({ full_name }) => full_name === data.full_name
+        );
+
+        if (duplicated) {
+          alert("Duplicated repositories!");
+          setInputValue("");
+          return;
+        }
 
         setInputValue("");
         setRepositories([...repositories, data]);
