@@ -4,6 +4,7 @@ import { rotate } from "../../global/styles";
 interface ButtonProps {
   width: string;
   height: string;
+  bgcolor?: string;
   $loading?: boolean;
 }
 
@@ -12,7 +13,7 @@ export const ButtonStyled = styled.button<ButtonProps>`
   height: ${({ height }) => height};
 
   color: var(--white);
-  background-color: var(--blue);
+  background-color: ${({ bgcolor }) => (bgcolor ? bgcolor : "var(--blue)")};
 
   border-radius: 5px;
 

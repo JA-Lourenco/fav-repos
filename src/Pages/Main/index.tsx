@@ -3,11 +3,15 @@ import { useState, ChangeEvent, FormEvent, useCallback } from "react";
 import { Button } from "../../components/Button";
 
 import { api } from "../../services/api";
-import { FaGithub, FaPlus, FaSpinner } from "react-icons/fa";
+import { FaBars, FaGithub, FaPlus, FaSpinner, FaTrash } from "react-icons/fa";
 
-import { Container, Title, Form } from "./styled";
+import { Container, Title, Form, RepoList } from "./styled";
 
-interface RepositoryProps {}
+interface RepositoryProps {
+  id: number;
+  full_name: string;
+  html_url: string;
+}
 
 export const Main = () => {
   const [inputValue, setInputValue] = useState("");
@@ -36,12 +40,49 @@ export const Main = () => {
         setRepositories([...repositories, data]);
       } catch (e: any) {
         console.error("submit Error: ", e);
+        alert("Error while fetching repositories!");
       } finally {
         setLoading(false);
       }
     },
     [inputValue, repositories]
   );
+
+  const deleteRepo = useCallback(
+    (repoId: number) => {
+      const updateRepos = repositories.filter(({ id }) => repoId !== id);
+      setRepositories(updateRepos);
+    },
+    [repositories]
+  );
+
+  const showRepositories = () => {
+    return repositories.map(({ id, full_name, html_url }) => (
+      <li key={`${id} - ${Math.random()}`}>
+        <a href={html_url} target="blank">
+          {full_name}
+        </a>
+
+        <span>
+          <Button
+            type="button"
+            width="35px"
+            height="35px"
+            icon={<FaBars size={18} />}
+          />
+
+          <Button
+            type="button"
+            width="35px"
+            height="35px"
+            bgcolor="var(--red)"
+            icon={<FaTrash size={18} />}
+            onClick={() => deleteRepo(id)}
+          />
+        </span>
+      </li>
+    ));
+  };
 
   return (
     <Container>
@@ -68,6 +109,8 @@ export const Main = () => {
           disabled={loading}
         />
       </Form>
+
+      <RepoList>{showRepositories()}</RepoList>
     </Container>
   );
 };

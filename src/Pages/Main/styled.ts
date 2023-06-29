@@ -47,3 +47,37 @@ export const Form = styled.form`
     border-bottom: 2px solid var(--black);
   }
 `;
+
+export const RepoList = styled.ul`
+  list-style-type: none;
+
+  margin-top: 20px;
+
+  padding: 10px 0;
+
+  li {
+    width: 100%;
+
+    padding: 5px 0;
+
+    border-bottom: 1px solid var(--blue);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    a {
+      text-decoration: none;
+
+      font-size: 16px;
+      color: var(--blue);
+    }
+  }
+
+  span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+`;
