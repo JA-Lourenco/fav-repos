@@ -1,13 +1,29 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+
+import { Button } from "../../components/Button";
+import { Container, Loading } from "../../utils/components/styled";
+
+import { useParams } from "react-router-dom";
 import { api } from "../../services/api";
 
-interface RepositoryProps {}
+import { BackButton, Owner } from "./styled";
+import { FaSpinner, FaArrowLeft } from "react-icons/fa";
+
+interface RepositoryProps {
+  name: string;
+  description: string;
+  owner: {
+    login: string;
+    avatar_url: string;
+  };
+}
 
 interface IssuesProps {}
 
 export const Repository = () => {
-  const [repository, setRepository] = useState({});
+  const [repository, setRepository] = useState<RepositoryProps>(
+    {} as RepositoryProps
+  );
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -19,7 +35,7 @@ export const Repository = () => {
       setLoading(true);
 
       const [{ data: repoData }, { data: issuesData }] = await Promise.all([
-        api.get(`/repos/${repo}`),
+        api.get<RepositoryProps>(`/repos/${repo}`),
         api.get(`/repos/${repo}/issues`, {
           params: {
             state: "open",
@@ -38,15 +54,41 @@ export const Repository = () => {
     }
   };
 
+  const handleBack = () => history.back();
+
   useEffect(() => {
     getData();
   }, []);
 
   return (
     <>
-      <h1>{}</h1>
+      {loading ? (
+        <Loading>
+          <FaSpinner size={100} />
+        </Loading>
+      ) : (
+        <Container>
+          <BackButton>
+            <Button
+              type="button"
+              width="35px"
+              height="35px"
+              icon={<FaArrowLeft size={15} />}
+              onClick={handleBack}
+            />
+          </BackButton>
 
-      <Link to="/">Main</Link>
+          <Owner>
+            <img
+              src={repository?.owner?.avatar_url}
+              alt={repository?.owner?.login}
+            />
+
+            <h1>{repository.name}</h1>
+            <p>{repository.description}</p>
+          </Owner>
+        </Container>
+      )}
     </>
   );
 };

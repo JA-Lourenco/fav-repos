@@ -1,19 +1,5 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  max-width: 70%;
-  height: 700px;
-
-  margin: 50px auto;
-  padding: 30px;
-
-  background-color: var(--white);
-
-  border-radius: 5px;
-
-  box-shadow: var(--box-shadow);
-`;
-
 export const Title = styled.h1`
   font-size: 28px;
 

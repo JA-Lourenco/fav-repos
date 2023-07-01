@@ -7,12 +7,13 @@ import {
 } from "react";
 
 import { Button } from "../../components/Button";
+import { Container } from "../../utils/components/styled";
 
 import { api } from "../../services/api";
 import { Link } from "react-router-dom";
 import { FaBars, FaGithub, FaPlus, FaSpinner, FaTrash } from "react-icons/fa";
 
-import { Container, Title, Form, RepoList } from "./styled";
+import { Title, Form, RepoList } from "./styled";
 
 interface RepositoryProps {
   id: number;
@@ -88,7 +89,7 @@ export const Main = () => {
               type="button"
               width="35px"
               height="35px"
-              icon={<FaBars size={18} />}
+              icon={<FaBars size={15} />}
             />
           </Link>
 
@@ -97,7 +98,7 @@ export const Main = () => {
             width="35px"
             height="35px"
             bgcolor="var(--red)"
-            icon={<FaTrash size={18} />}
+            icon={<FaTrash size={15} />}
             onClick={() => deleteRepo(id)}
           />
         </span>

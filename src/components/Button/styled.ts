@@ -17,6 +17,10 @@ export const ButtonStyled = styled.button<ButtonProps>`
 
   border-radius: 5px;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   ${({ disabled }) =>
     disabled
       ? css`
