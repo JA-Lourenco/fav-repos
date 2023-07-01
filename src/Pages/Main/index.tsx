@@ -9,6 +9,7 @@ import {
 import { Button } from "../../components/Button";
 
 import { api } from "../../services/api";
+import { Link } from "react-router-dom";
 import { FaBars, FaGithub, FaPlus, FaSpinner, FaTrash } from "react-icons/fa";
 
 import { Container, Title, Form, RepoList } from "./styled";
@@ -82,12 +83,14 @@ export const Main = () => {
         </a>
 
         <span>
-          <Button
-            type="button"
-            width="35px"
-            height="35px"
-            icon={<FaBars size={18} />}
-          />
+          <Link to={`/repository/${encodeURIComponent(full_name)}`}>
+            <Button
+              type="button"
+              width="35px"
+              height="35px"
+              icon={<FaBars size={18} />}
+            />
+          </Link>
 
           <Button
             type="button"
