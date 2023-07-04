@@ -28,3 +28,57 @@ export const BackButton = styled.div`
   top: 30px;
   left: 30px;
 `;
+
+export const IssuesList = styled.ul`
+  height: 400px;
+
+  margin: 15px auto;
+
+  list-style-type: none;
+
+  li {
+    padding: 5px;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+
+    border-bottom: 1px solid var(--blue);
+
+    img {
+      width: 45px;
+    }
+
+    div {
+      p {
+        margin-bottom: 5px;
+      }
+
+      a {
+        color: var(--blue);
+
+        text-decoration: none;
+
+        font-weight: 700;
+
+        &:hover {
+          color: var(--lightBlue);
+          transition: 0.4s;
+        }
+      }
+    }
+
+    span {
+      margin-right: 5px;
+      padding: 5px;
+
+      background-color: var(--blue);
+      color: var(--white);
+
+      font-size: 11px;
+
+      border-radius: 5px;
+    }
+  }
+`;

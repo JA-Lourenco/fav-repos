@@ -15,7 +15,7 @@ export const Container = styled.div`
   position: relative;
 
   max-width: 70%;
-  height: 700px;
+  height: 90vh;
 
   margin: 50px auto;
   padding: 30px;

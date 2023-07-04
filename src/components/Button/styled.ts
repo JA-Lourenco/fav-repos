@@ -15,6 +15,7 @@ export const ButtonStyled = styled.button<ButtonProps>`
   color: var(--white);
   background-color: ${({ bgcolor }) => (bgcolor ? bgcolor : "var(--blue)")};
 
+  border: 1px solid ${({ bgcolor }) => (bgcolor ? bgcolor : "var(--blue)")};
   border-radius: 5px;
 
   display: flex;
@@ -27,12 +28,10 @@ export const ButtonStyled = styled.button<ButtonProps>`
           cursor: not-allowed;
           opacity: 0.7;
         `
-      : css`
+      : css<ButtonProps>`
           &:hover {
-            color: var(--blue);
+            color: ${({ bgcolor }) => bgcolor || "var(--blue)"};
             background-color: var(--white);
-
-            border: 1px solid var(--blue);
 
             transition: all 0.5s ease-out;
           }
