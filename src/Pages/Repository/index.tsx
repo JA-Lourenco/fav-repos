@@ -6,8 +6,13 @@ import { Container, Loading } from "../../utils/components/styled";
 import { useParams } from "react-router-dom";
 import { api } from "../../services/api";
 
-import { BackButton, IssuesList, Owner } from "./styled";
-import { FaSpinner, FaArrowLeft } from "react-icons/fa";
+import { BackButton, Owner, IssuesList, PageActions } from "./styled";
+import {
+  FaSpinner,
+  FaArrowLeft,
+  FaAngleLeft,
+  FaAngleRight,
+} from "react-icons/fa";
 
 interface RepositoryProps {
   name: string;
@@ -37,6 +42,7 @@ export const Repository = () => {
     {} as RepositoryProps
   );
   const [issues, setIssues] = useState<IssuesProps[]>([]);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const params = useParams();
@@ -44,27 +50,39 @@ export const Repository = () => {
 
   const handleBack = () => history.back();
 
+  const handlePagination = (action: "previous" | "next") => {
+    setPage(action === "previous" ? page - 1 : page + 1);
+  };
+
   const getData = async () => {
     try {
       setLoading(true);
 
-      const [{ data: repoData }, { data: issuesData }] = await Promise.all([
-        api.get<RepositoryProps>(`/repos/${repo}`),
-        api.get<IssuesProps[]>(`/repos/${repo}/issues`, {
-          params: {
-            state: "open",
-            per_page: 5,
-          },
-        }),
-      ]);
+      const { data } = await api.get<RepositoryProps>(`/repos/${repo}`);
 
-      setRepository(repoData);
-      setIssues(issuesData);
+      setRepository(data);
     } catch (e) {
       console.error("getData Error: ", e);
       alert("Error to get Details!");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getIssues = async () => {
+    try {
+      const { data } = await api.get<IssuesProps[]>(`/repos/${repo}/issues`, {
+        params: {
+          state: "open",
+          per_page: 5,
+          page,
+        },
+      });
+
+      setIssues(data);
+    } catch (e) {
+      console.log("getIssues Error: ", e);
+      alert("Error to get Issues!");
     }
   };
 
@@ -98,6 +116,10 @@ export const Repository = () => {
     getData();
   }, []);
 
+  useEffect(() => {
+    getIssues();
+  }, [page]);
+
   return (
     <>
       {loading ? (
@@ -127,6 +149,25 @@ export const Repository = () => {
           </Owner>
 
           <IssuesList>{showIssues()}</IssuesList>
+
+          <PageActions>
+            <Button
+              type="button"
+              width="35px"
+              height="35px"
+              icon={<FaAngleLeft size={15} />}
+              onClick={() => handlePagination("previous")}
+              disabled={page <= 1}
+            />
+
+            <Button
+              type="button"
+              width="35px"
+              height="35px"
+              icon={<FaAngleRight size={15} />}
+              onClick={() => handlePagination("next")}
+            />
+          </PageActions>
         </Container>
       )}
     </>
