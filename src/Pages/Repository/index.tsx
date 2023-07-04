@@ -12,6 +12,9 @@ import {
   FaArrowLeft,
   FaAngleLeft,
   FaAngleRight,
+  FaBars,
+  FaLockOpen,
+  FaLock,
 } from "react-icons/fa";
 
 interface RepositoryProps {
@@ -43,7 +46,9 @@ export const Repository = () => {
   );
   const [issues, setIssues] = useState<IssuesProps[]>([]);
   const [page, setPage] = useState(1);
+  const [state, setState] = useState("all");
   const [loading, setLoading] = useState(false);
+  const [loadingIssues, setLoadingIssues] = useState(false);
 
   const params = useParams();
   const { repo } = params;
@@ -52,6 +57,10 @@ export const Repository = () => {
 
   const handlePagination = (action: "previous" | "next") => {
     setPage(action === "previous" ? page - 1 : page + 1);
+  };
+
+  const handleIssuesState = (situation: "all" | "open" | "closed") => {
+    setState(situation);
   };
 
   const getData = async () => {
@@ -71,9 +80,11 @@ export const Repository = () => {
 
   const getIssues = async () => {
     try {
+      setLoadingIssues(true);
+
       const { data } = await api.get<IssuesProps[]>(`/repos/${repo}/issues`, {
         params: {
-          state: "open",
+          state,
           per_page: 5,
           page,
         },
@@ -83,6 +94,8 @@ export const Repository = () => {
     } catch (e) {
       console.log("getIssues Error: ", e);
       alert("Error to get Issues!");
+    } finally {
+      setLoadingIssues(false);
     }
   };
 
@@ -118,7 +131,7 @@ export const Repository = () => {
 
   useEffect(() => {
     getIssues();
-  }, [page]);
+  }, [page, state]);
 
   return (
     <>
@@ -148,7 +161,42 @@ export const Repository = () => {
             <p>{repository.description}</p>
           </Owner>
 
-          <IssuesList>{showIssues()}</IssuesList>
+          <PageActions>
+            <Button
+              type="button"
+              title="ALL"
+              width="100px"
+              height="35px"
+              icon={<FaBars size={15} />}
+              onClick={() => handleIssuesState("all")}
+            />
+
+            <Button
+              type="button"
+              title="OPEN"
+              width="100px"
+              height="35px"
+              icon={<FaLockOpen size={15} />}
+              onClick={() => handleIssuesState("open")}
+            />
+
+            <Button
+              type="button"
+              title="CLOSED"
+              width="100px"
+              height="35px"
+              icon={<FaLock size={15} />}
+              onClick={() => handleIssuesState("closed")}
+            />
+          </PageActions>
+
+          {loadingIssues ? (
+            <Loading height="10vh">
+              <FaSpinner size={50} color="var(--blue)" />
+            </Loading>
+          ) : (
+            <IssuesList>{showIssues()}</IssuesList>
+          )}
 
           <PageActions>
             <Button

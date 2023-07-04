@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 export const Owner = styled.header`
+  margin-bottom: 50px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { rotate } from "../../global/styles";
 
 interface LoadingProps {
+  height?: string;
+  padding?: string;
   color?: string;
 }
 
@@ -28,7 +30,9 @@ export const Container = styled.div`
 `;
 
 export const Loading = styled.div<LoadingProps>`
-  height: 100vh;
+  height: ${({ height }) => height || "100vh"};
+
+  padding: ${({ padding }) => padding || "25px"};
 
   color: ${({ color }) => color || "var(--white)"};
 

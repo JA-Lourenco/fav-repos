@@ -21,6 +21,7 @@ export const ButtonStyled = styled.button<ButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5px;
 
   ${({ disabled }) =>
     disabled
